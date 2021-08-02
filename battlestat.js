@@ -221,21 +221,29 @@ function battle(characterPower, enemyPower) {
 
 function addParentDiv(count, stats) {
 	className = 'dinnoParentDiv';
-	parentDiv = document.getElementsByClassName('dinnoParentDiv');
+	parentDiv = document.getElementsByClassName(className);
 
 	if (parentDiv.length == 0) {
 		const div = document.createElement('div');
+		div.style.display = 'flex';
+		div.style.paddingTop = '5%';
 		div.className = className;
-		document.getElementsByClassName('combat-enemy-container')[0].appendChild(div);
+		document.getElementsByClassName('enemy-container')[0].appendChild(div);
 	}
 }
 
 function addChildDiv(count, stats) {
 	const div = document.createElement('div');
-  
+	div.style.width = 'flex';
+	div.style.padding = '0';
+	div.style.margin = '0';
+	div.style.position = 'relative';
+	div.style.textAlign = 'center';
+	div.style.alignItems = 'center';
+	div.style.fontSize = '26pt';
+
 	div.className = 'dinnoChildDiv';
-  
-	div.innerHTML = stats;
+	div.innerHTML = stats.toFixed(2) + '%';
   
 	document.getElementsByClassName('dinnoParentDiv')[0].appendChild(div);
 }
@@ -273,6 +281,5 @@ for (x=0; x<enemies.length; x++) {
 	characterTotalPower = getCharacterTotalPower(character.power, character, weapon, weaponPower, traitBonus);
 	enemyTotalPower = getEnemyTotalPower(enemies[x]);
 	battleProbability = battle(characterTotalPower, enemyTotalPower, x);
-	console.log(battleProbability);
-	addChildDiv(x, battleProbability);
+	addChildDiv(x, (battleProbability*100));
 }
