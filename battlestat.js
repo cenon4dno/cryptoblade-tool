@@ -219,22 +219,42 @@ function battle(characterPower, enemyPower) {
     return win / (win + lose);
 }
 
-function addDiv(count, stats) {
+function addParentDiv(count, stats) {
+	className = 'dinnoParentDiv';
+	parentDiv = document.getElementsByClassName('dinnoParentDiv');
+
+	if (parentDiv.length == 0) {
+		const div = document.createElement('div');
+		div.className = className;
+		document.getElementsByClassName('combat-enemy-container')[0].appendChild(div);
+	}
+}
+
+function addChildDiv(count, stats) {
 	const div = document.createElement('div');
   
-	div.className = 'dinnoDiv';
+	div.className = 'dinnoChildDiv';
   
-	div.innerHTML = `
-		Worst Case: This is a test 
-		Best Case:  This is a test
-	`;
+	div.innerHTML = stats;
   
-	document.getElementsByClassName('combat-enemy-container')[0].appendChild(div);
+	document.getElementsByClassName('dinnoParentDiv')[0].appendChild(div);
 }
   
-function removeRow(input) {
-	document.getElementsByClassName('combat-enemy-container')[0].removeChild(input.parentNode);
+function removeChildDiv() {
+	parentDiv = document.getElementsByClassName('dinnoParentDiv');
+	if (parentDiv.length > 0) {
+		console.log(parentDiv[0].childElementCount);
+		for (i=parentDiv[0].childElementCount;i>0;i--) {
+			console.log(i);
+			document.getElementsByClassName('dinnoParentDiv')[0].removeChild(document.getElementsByClassName('dinnoParentDiv')[0].childNodes[i-1]);
+		}
+	}
 }
+
+/*************************************************** Start Orchestration *************************************************************** */
+// Remove previous HTML
+removeChildDiv();
+addParentDiv();
 
 // Get Character Stats
 let character = getCharacter();
@@ -254,5 +274,5 @@ for (x=0; x<enemies.length; x++) {
 	enemyTotalPower = getEnemyTotalPower(enemies[x]);
 	battleProbability = battle(characterTotalPower, enemyTotalPower, x);
 	console.log(battleProbability);
-	addDiv(x, battleProbability);
+	addChildDiv(x, battleProbability);
 }
